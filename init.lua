@@ -99,7 +99,7 @@ do
   vim.g.maplocalleader = ' '
 
   -- Set to true if you have a Nerd Font installed and selected in the terminal
-  vim.g.have_nerd_font = false
+  vim.g.have_nerd_font = true
 
   -- [[ Setting options ]]
   --  See `:help vim.o`
@@ -432,6 +432,12 @@ do
   -- - sr)'  - [S]urround [R]eplace [)] [']
   require('mini.surround').setup()
 
+  -- Closes buffers without closing window layouts
+  require('mini.bufremove').setup()
+  vim.keymap.set('n', '<leader>bd', function()
+    require('mini.bufremove').delete(0, false)
+  end, { desc = '[B]uffer [D]elete' })
+
   -- Simple and easy statusline.
   --  You could remove this setup call if you don't like it,
   --  and try some other statusline plugin
@@ -447,6 +453,26 @@ do
 
   -- ... and there is more!
   --  Check out: https://github.com/nvim-mini/mini.nvim
+
+  -- Highlight open files in a tab-like line at the top
+  -- See `:help bufferline`
+  vim.pack.add { gh 'akinsho/bufferline.nvim' }
+  require('bufferline').setup {
+    options = {
+      numbers = 'ordinal',
+    },
+  }
+
+  -- Keymaps to switch between buffers using Alt + number
+  vim.keymap.set('n', '<A-1>', '<Cmd>BufferLineGoToBuffer 1<CR>', { desc = 'Go to buffer 1' })
+  vim.keymap.set('n', '<A-2>', '<Cmd>BufferLineGoToBuffer 2<CR>', { desc = 'Go to buffer 2' })
+  vim.keymap.set('n', '<A-3>', '<Cmd>BufferLineGoToBuffer 3<CR>', { desc = 'Go to buffer 3' })
+  vim.keymap.set('n', '<A-4>', '<Cmd>BufferLineGoToBuffer 4<CR>', { desc = 'Go to buffer 4' })
+  vim.keymap.set('n', '<A-5>', '<Cmd>BufferLineGoToBuffer 5<CR>', { desc = 'Go to buffer 5' })
+  vim.keymap.set('n', '<A-6>', '<Cmd>BufferLineGoToBuffer 6<CR>', { desc = 'Go to buffer 6' })
+  vim.keymap.set('n', '<A-7>', '<Cmd>BufferLineGoToBuffer 7<CR>', { desc = 'Go to buffer 7' })
+  vim.keymap.set('n', '<A-8>', '<Cmd>BufferLineGoToBuffer 8<CR>', { desc = 'Go to buffer 8' })
+  vim.keymap.set('n', '<A-9>', '<Cmd>BufferLineGoToBuffer 9<CR>', { desc = 'Go to buffer 9' })
 end
 
 -- ============================================================
@@ -970,7 +996,7 @@ do
   -- require 'kickstart.plugins.indent_line'
   -- require 'kickstart.plugins.lint'
   -- require 'kickstart.plugins.autopairs'
-  -- require 'kickstart.plugins.neo-tree'
+  require 'kickstart.plugins.neo-tree'
   -- require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
 
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
