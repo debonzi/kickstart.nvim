@@ -171,6 +171,10 @@ do
   -- instead raise a dialog asking if you wish to save the current file(s)
   -- See `:help 'confirm'`
   vim.o.confirm = true
+
+  -- Reload files that changed on disk when Neovim checks their timestamp.
+  -- Useful when external tools or coding agents edit files in the workspace.
+  vim.o.autoread = true
 end
 
 -- ============================================================
@@ -250,6 +254,22 @@ do
     desc = 'Highlight when yanking (copying) text',
     group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
     callback = function() vim.hl.on_yank() end,
+  })
+
+  local reload_group = vim.api.nvim_create_augroup('auto-reload-files', { clear = true })
+
+  vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+    desc = 'Reload files changed on disk',
+    group = reload_group,
+    callback = function()
+      if vim.fn.mode() ~= 'c' then vim.cmd 'silent! checktime' end
+    end,
+  })
+
+  vim.api.nvim_create_autocmd('FileChangedShellPost', {
+    desc = 'Notify when a file was reloaded from disk',
+    group = reload_group,
+    callback = function() vim.notify('File reloaded from disk', vim.log.levels.INFO) end,
   })
 end
 
