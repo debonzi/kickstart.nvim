@@ -11,7 +11,8 @@ require('markview-smart-tables').setup {
 require('markview').setup {
   preview = {
     icon_provider = 'mini',
-    hybrid_modes = { 'n', 'v', 'V', 'i' },
+    modes = { 'n', 'no', 'c', 'i' },
+    hybrid_modes = { 'i' },
   },
   renderers = {
     markdown_table = function(buffer, item)
